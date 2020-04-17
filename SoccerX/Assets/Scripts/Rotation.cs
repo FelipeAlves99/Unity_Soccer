@@ -9,6 +9,7 @@ public class Rotation : MonoBehaviour
     [SerializeField] private Transform posStart;
     [SerializeField] private Image arrowImg;
     public float zRotation;
+    public bool liberateRotation = true;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,7 @@ public class Rotation : MonoBehaviour
     {
         ArrowRotation();
         RotationInput();
+        LimitsRotation();
     }
 
     private void ArrowPosition()
@@ -35,11 +37,30 @@ public class Rotation : MonoBehaviour
 
     private void RotationInput()
     {
-        if (Input.GetKey(KeyCode.UpArrow))        
-            zRotation += 2.5f;
-        if (Input.GetKey(KeyCode.DownArrow))        
-            zRotation -= 2.5f;
-        
+        if (liberateRotation)
+        {
+            float moveX = Input.GetAxis("Mouse X");
+            float moveY = Input.GetAxis("Mouse Y");
+
+            if (zRotation < 90)            
+                if (moveY > 0)                
+                    zRotation += 2.5f;
+                            
+            if (zRotation > 0)            
+                if (moveY < 0)                
+                    zRotation -= 2.5f;                            
+        }
+
+    }
+
+    private void LimitsRotation()
+    {
+        if (zRotation >= 90)
+            zRotation = 90;
+
+        if (zRotation <= 0)
+            zRotation = 0;
+
     }
 
 }

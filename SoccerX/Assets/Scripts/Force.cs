@@ -7,28 +7,54 @@ public class Force : MonoBehaviour
 {
 
     private Rigidbody2D Ball;
-    private float force = 1000f;
-    private Rotation rotation;
+    public float force = 0;
+    private Rotation Rotation;
+    public Image ArrowEnergy;
 
     // Start is called before the first frame update
     void Start()
     {
         Ball = GetComponent<Rigidbody2D>();
-        rotation = GetComponent<Rotation>();
+        Rotation = GetComponent<Rotation>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        ControlForce();
         ApplyForce();
     }
 
     private void ApplyForce()
     {
-        float x = force * Mathf.Cos(rotation.zRotation * Mathf.Deg2Rad);
-        float y = force * Mathf.Sin(rotation.zRotation * Mathf.Deg2Rad);
+        float x = force * Mathf.Cos(Rotation.zRotation * Mathf.Deg2Rad);
+        float y = force * Mathf.Sin(Rotation.zRotation * Mathf.Deg2Rad);
 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Rotation.liberateShot)
+        {
             Ball.AddForce(new Vector2(x, y));
+            Rotation.liberateShot = false;
+        }
+    }
+
+
+    private void ControlForce()
+    {
+        if (Rotation.liberateRotation)
+        {
+            float moveX = Input.GetAxis("Mouse X");
+
+            if (moveX < 0)
+            {
+                ArrowEnergy.fillAmount += 1 * Time.deltaTime;
+                force = ArrowEnergy.fillAmount * 1000;
+            }
+
+            if (moveX > 0)
+            {
+                ArrowEnergy.fillAmount -= 1 * Time.deltaTime;
+                force = ArrowEnergy.fillAmount * 1000;
+            }
+        }
     }
 }

@@ -30,17 +30,17 @@ public class Force : MonoBehaviour
         float x = force * Mathf.Cos(Rotation.zRotation * Mathf.Deg2Rad);
         float y = force * Mathf.Sin(Rotation.zRotation * Mathf.Deg2Rad);
 
-        if (Rotation.liberateShot)
+        if (Rotation.canKick)
         {
             Ball.AddForce(new Vector2(x, y));
-            Rotation.liberateShot = false;
+            Rotation.canKick = false;
         }
     }
-
+    
 
     private void ControlForce()
     {
-        if (Rotation.liberateRotation)
+        if (Rotation.canRotate)
         {
             float moveX = Input.GetAxis("Mouse X");
 
